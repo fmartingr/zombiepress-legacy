@@ -6,7 +6,7 @@
   "dependencies": {
     "socket.io": "~0.9.13",
     "express": "~3.1.0",
-    "twit": "git://github.com/fmartingr/twit.git"
+    "twit": "~1.1.5"
   },
   "devDependencies": {},
   "scripts": {
