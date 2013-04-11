@@ -1,12 +1,14 @@
 {
   "name": "fmartingrcom",
-  "version": "0.0.1",
-  "description": "fmartingrcom",
+  "version": "0.1.0",
+  "description": "My personal site",
   "main": "app.js",
   "dependencies": {
     "socket.io": "~0.9.13",
     "express": "~3.1.0",
-    "twit": "~1.1.5"
+    "twit": "~1.1.5",
+    "coffee-script": "~1.6.2",
+    "dropbox": "~0.9.2"
   },
   "devDependencies": {},
   "scripts": {
