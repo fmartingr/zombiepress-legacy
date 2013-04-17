@@ -30,6 +30,14 @@ class DropboxStorageManager extends StorageManager
         this.dataFolder = 'data'
         this.cursorFile = this.dataFolder + '/.cursor'
         this.cursorTag = false
+        this.alerts = {}
+
+    registerAlert: (file, callback) ->
+        this.alerts[file] = callback
+
+    alert: (file) ->
+        if file of this.alerts
+            this.alerts[file].call null, file
 
     getConnectionInfo: ->
         info =
@@ -75,13 +83,6 @@ class DropboxStorageManager extends StorageManager
             syncOptions.cursorTag = this.cursorTag
 
         this.client.delta syncOptions, (status, reply) =>
-            if false
-                console.log 'Status:'
-                console.log status
-                console.log 'Reply:'
-                console.log reply
-
-
             if reply.blankSlate
                 console.log '[<>] Black state. Removing all data files'
                 this.deleteFolder()
@@ -117,6 +118,14 @@ class DropboxStorageManager extends StorageManager
                 console.log error
             fs.writeFileSync this.dataFolder + file, data, 'utf-8', (error) ->
                 console.log error
+            this.alert file
+
+    get: (file) ->
+        result = false
+        if fs.existsSync this.dataFolder + file
+            data = fs.readFileSync this.dataFolder + file, 'utf-8'
+            result = data
+        return result
 
 
 exports.StorageManager = new StorageManager()
