@@ -1,10 +1,19 @@
+# Modules
 toml = require 'tomljs'
 
-storage = new require('./lib/storage.coffee').DropboxStorageManager
+# Libraries
+storage = require('./lib/storage.coffee').DropboxStorageManager
 
-storage.connect()
+config = require('./lib/config.coffee').TOMLConfigManager
+config.storage = storage
+config.reload()
 
 storage.registerAlert '/configuration.toml', (file) ->
-    console.log 'CONFIGURATION CHANGED :D:D:D:D:D'
-    console.log file
-    console.log toml storage.get(file)
+    config.reload()
+
+storage.registerAlert '/routing.toml', (file) =>
+    routes = toml storage.get(file)
+    console.log routes
+    router = new director.http.Router routes
+
+storage.connect()

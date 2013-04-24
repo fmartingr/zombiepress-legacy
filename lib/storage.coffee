@@ -128,5 +128,5 @@ class DropboxStorageManager extends StorageManager
         return result
 
 
-exports.StorageManager = new StorageManager()
-exports.DropboxStorageManager = new DropboxStorageManager()
+exports.StorageManager = new StorageManager
+exports.DropboxStorageManager = new DropboxStorageManager
