@@ -38,7 +38,7 @@ class DropboxStorageManager extends StorageManager
 
     alert: (file) ->
         if file of this.alerts
-            this.alerts[file].call null, file
+            this.alerts[file].call null, @dataFolder + file
 
     registerCallback: (callback) ->
         @callbacks.push callback
