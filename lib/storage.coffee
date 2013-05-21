@@ -95,7 +95,7 @@ class DropboxStorageManager extends StorageManager
                 if change.wasRemoved
                     if fs.existsSync path  # Change went too fast?
                         if fs.lstatSync(path).isDirectory()
-                            fs.rmdirSync path
+                            @rmdirRecursiveSync path
                         else
                             fs.unlinkSync this.dataFolder + change.path
                 else
@@ -108,8 +108,8 @@ class DropboxStorageManager extends StorageManager
                         
             this.updateCursor(reply.cursorTag)
 
-            #if reply.shouldPullAgain
-            #    this.sync()
+            if reply.shouldPullAgain
+                this.sync()
 
 
     retrieve: (file) ->
@@ -126,6 +126,21 @@ class DropboxStorageManager extends StorageManager
             data = fs.readFileSync this.dataFolder + file, 'utf-8'
             result = data
         return result
+
+    # Helpers
+    rmdirRecursiveSync: (path) ->
+        files = []
+        if fs.existsSync path
+            files = fs.readdirSync path
+            files.forEach (file, index) =>
+                currentPath = path + "/" + file
+                if fs.statSync(currentPath).isDirectory()
+                    # Recurse
+                    @rmdirRecursiveSync currentPath
+                else
+                    # Or delete the file
+                    fs.unlinkSync currentPath
+
 
 
 exports.StorageManager = new StorageManager
