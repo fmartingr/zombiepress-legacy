@@ -31,6 +31,7 @@ class DropboxStorageManager extends StorageManager
         this.cursorFile = this.dataFolder + '/.cursor'
         this.cursorTag = false
         this.alerts = {}
+        this.callbacks = []
 
     registerAlert: (file, callback) ->
         this.alerts[file] = callback
@@ -38,6 +39,13 @@ class DropboxStorageManager extends StorageManager
     alert: (file) ->
         if file of this.alerts
             this.alerts[file].call null, file
+
+    registerCallback: (callback) ->
+        @callbacks.push callback
+
+    finishedSync: ->
+        for func in @callbacks
+            func.call()
 
     getConnectionInfo: ->
         info =
@@ -109,7 +117,10 @@ class DropboxStorageManager extends StorageManager
             this.updateCursor(reply.cursorTag)
 
             if reply.shouldPullAgain
-                this.sync()
+                @sync()
+            else 
+                if reply.changes.length > 0
+                    @finishedSync()
 
 
     retrieve: (file) ->
