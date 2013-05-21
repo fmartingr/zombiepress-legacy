@@ -17,3 +17,8 @@ storage.registerAlert '/routing.toml', (file) =>
     router = new director.http.Router routes
 
 storage.connect()
+
+htmlCompiler = require('./lib/compiler.coffee').JadeCompiler
+storage.registerAlert '/theme/fmartingr/home.jade', (file) =>
+    console.log file
+    htmlCompiler.compile file, './data/static/home.html'
