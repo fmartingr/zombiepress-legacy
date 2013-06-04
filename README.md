@@ -1,4 +1,3 @@
-My personal site
-================
+This was a personal project to create a blogging system in nodejs with dropbox support, but the concept was abadoned.
 
-[fmartingr.com](http://fmartingr.com)
+Left here for historical purposes.
